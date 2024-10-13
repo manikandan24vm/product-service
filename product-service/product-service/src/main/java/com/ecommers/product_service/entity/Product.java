@@ -1,6 +1,6 @@
 package com.ecommers.product_service.entity;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Product extends Audit{
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long productId;
     private String productName;
     private String description;
     private double price;
     private boolean isStockAvailable;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
     private Category category;
 }
