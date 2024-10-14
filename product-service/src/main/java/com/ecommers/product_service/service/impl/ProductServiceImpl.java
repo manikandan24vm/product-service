@@ -43,19 +43,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateById(Long productId, Product product) {
-        Product productData = productRepository.findById(productId)
+        Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with the ID :" + productId));
-        if (productData != null) {
-            return productRepository.save(product);
-        } else {
-            throw new ProductNotFoundException("Product not found with the ID :" + productId);
-        }
+        existingProduct.setProductName(product.getProductName());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setStockAvailable(product.isStockAvailable());
+        return productRepository.save(existingProduct);
+
     }
 
     @Override
     public void deleteProductById(Long id) {
-        Product product= productRepository.findById(id).orElseThrow(()->
-                new ProductNotFoundException("Product not found with the ID"+id));
+        Product product = productRepository.findById(id).orElseThrow(() ->
+                new ProductNotFoundException("Product not found with the ID" + id));
         try {
             productRepository.delete(product);
         } catch (Exception exception) {

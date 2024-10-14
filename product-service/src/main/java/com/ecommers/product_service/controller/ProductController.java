@@ -68,6 +68,13 @@ public class ProductController {
             @ApiResponse(responseCode = "500",description = "internal server error",content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<String> deleteProduct(@PathVariable Long productId){
-        return ResponseEntity.status(HttpStatus.OK).body("product deleted successfully with ID "+productId);
+        try {
+            productService.deleteProductById(productId);
+            return ResponseEntity.status(HttpStatus.OK).body("product deleted successfully with ID "+productId);
+        }
+        catch (Exception e){
+            throw new RuntimeException("can't delete the product");
+
+        }
     }
 }
