@@ -19,7 +19,7 @@ public class Product extends Audit{
     private String description;
     private double price;
     private boolean isStockAvailable;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 }

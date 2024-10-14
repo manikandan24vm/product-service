@@ -5,7 +5,7 @@ import com.ecommers.product_service.entity.Product;
 import java.util.List;
 
 public interface ProductService {
-    public Product createProduct(Product product);
+    public Product createProduct(Product product, String categoryName);
 
     public Product getProductByIdOrName(Long productId, String productName);
 
