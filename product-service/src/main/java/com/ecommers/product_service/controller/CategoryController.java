@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "500",description = "internal server error",content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @PostMapping("/category")
-    public ResponseEntity<CategoryDTO> createProduct(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> createProduct(@RequestBody @Valid CategoryDTO categoryDTO) {
         CategoryDTO category = CategoryMapper.toDTO(categoryService.createCategory(CategoryMapper.toEntity(categoryDTO)));
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
@@ -61,7 +62,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "500",description = "internal server error",content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @PutMapping("/category/{categoryId}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @RequestBody @Valid CategoryDTO categoryDTO) {
         Category category = categoryService.updateCategoryById(categoryId, CategoryMapper.toEntity(categoryDTO));
         return ResponseEntity.status(HttpStatus.OK).body(CategoryMapper.toDTO(category));
     }

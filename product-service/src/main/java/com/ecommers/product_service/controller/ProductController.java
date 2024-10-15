@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class ProductController {
             @ApiResponse(responseCode = "500",description = "internal server error",content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @PostMapping("/product/{categoryName}")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO, @PathVariable String categoryName){
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO productDTO, @PathVariable String categoryName){
         Product product= ProductMapper.toEntity(productDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ProductMapper.toDTO(productService.createProduct(product,categoryName)));
     }
@@ -57,7 +58,7 @@ public class ProductController {
             @ApiResponse(responseCode = "500",description = "internal server error",content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @PutMapping("/product/{productId}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,@RequestBody @Valid ProductDTO productDTO){
         ProductDTO product= ProductMapper.toDTO(productService.updateById(productId,ProductMapper.toEntity(productDTO)));
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
